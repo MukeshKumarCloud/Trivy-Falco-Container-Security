@@ -42,7 +42,7 @@ Implement and demonstrate two complementary layers of container security:
 ---
 
 ## Project Structure
-
+```
 trivy-falco-project/
 ├── config.env
 ├── Dockerfile
@@ -62,8 +62,7 @@ trivy-falco-project/
     ├── 05_k8s_misconfig.txt
     ├── falco_alerts_raw.txt
     └── falco_alerts.txt
-
----
+```
 
 ## Part 1 — Trivy: Shift-Left Scanning
 
