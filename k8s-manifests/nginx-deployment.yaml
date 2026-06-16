@@ -1,0 +1,48 @@
+# Deployment with intentional security misconfigurations for demo
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnerable-nginx
+  namespace: security-lab
+  labels:
+    app: vulnerable-nginx
+    purpose: trivy-falco-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vulnerable-nginx
+  template:
+    metadata:
+      labels:
+        app: vulnerable-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.21.0
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: false    # BAD: runs as root — Trivy will flag this
+            privileged: false
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerable-nginx-svc
+  namespace: security-lab
+spec:
+  selector:
+    app: vulnerable-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

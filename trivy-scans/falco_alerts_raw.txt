@@ -1,0 +1,38 @@
+Script started on 2026-06-16 12:53:45+05:30 [COMMAND="docker run --rm -it   --name falco   --privileged   -v /sys/kernel/tracing:/sys/kernel/tracing:ro   -v /var/run/docker.sock:/host/var/run/docker.sock   -v /proc:/host/proc:ro   -v /etc:/host/etc:ro   -v ~/trivy-falco-project/falco-rules/custom_rules.yaml:/etc/falco/falco_rules.local.yaml   falcosecurity/falco:0.43.0" <not executed on terminal>]
+^@2026-06-16T07:23:49+0000: Falco version: 0.43.0 (x86_64)
+2026-06-16T07:23:49+0000: Falco initialized with configuration files:
+2026-06-16T07:23:49+0000:    /etc/falco/config.d/falco.container_plugin.yaml | schema validation: ok
+2026-06-16T07:23:49+0000:    /etc/falco/config.d/falco.iso8601_timeformat.yaml | schema validation: ok
+2026-06-16T07:23:49+0000:    /etc/falco/falco.yaml | schema validation: ok
+2026-06-16T07:23:49+0000: System info: Linux version 6.14.0-63.fc42.x86_64 (mockbuild@d5701c6d040c430c8283c8c9847dc93f) (gcc (GCC) 15.0.1 20250228 (Red Hat 15.0.1-0), GNU ld version 2.44-3.fc42) #1 SMP PREEMPT_DYNAMIC Mon Mar 24 19:53:37 UTC 2025
+2026-06-16T07:23:49+0000: Loaded plugin 'container@0.6.1' from file /usr/share/falco/plugins/libcontainer.so
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'podman' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/podman/podman.sock'
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'docker' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/var/run/docker.sock'
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'cri' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/containerd/containerd.sock'
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/crio/crio.sock'
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/k3s/containerd/containerd.sock'
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/host-containerd/containerd.sock'
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'containerd' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: * enabled container runtime socket at '/host/run/host-containerd/containerd.sock'
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'lxc' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'libvirt_lxc' container engine.
+2026-06-16T07:23:49+0000: [libs]: container: Enabled 'bpm' container engine.
+2026-06-16T07:23:49+0000: Loading rules from:
+2026-06-16T07:23:49+0000:    /etc/falco/falco_rules.yaml | schema validation: ok
+2026-06-16T07:23:49+0000:    /etc/falco/falco_rules.local.yaml | schema validation: ok
+2026-06-16T07:23:49+0000: The chosen syscall buffer dimension is: 8388608 bytes (8 MBs)
+2026-06-16T07:23:49+0000: Starting health webserver with threadiness 2, listening on 0.0.0.0:8765
+2026-06-16T07:23:49+0000: Loaded event sources: syscall
+2026-06-16T07:23:49+0000: Enabled event sources: syscall
+2026-06-16T07:23:49+0000: Opening 'syscall' source with modern BPF probe.
+2026-06-16T07:23:49+0000: One ring buffer every '2' CPUs.
+2026-06-16T07:23:49+0000: [libs]: Trying to open the right engine!
+2026-06-16T07:24:47.158711129+0000: Warning WARNING: Shell spawned in container (user=root user_loginuid=-1 container_id=bf3fa197fc92 container_name=vulnerable-nginx image=nginx:1.21.0 shell=bash parent=containerd-shim cmdline=bash -c id && whoami) container_id=bf3fa197fc92 container_name=vulnerable-nginx container_image_repository=nginx container_image_tag=1.21.0 k8s_pod_name=<NA> k8s_ns_name=<NA>
+2026-06-16T07:24:50.291559327+0000: Warning Sensitive file opened for reading by non-trusted program | file=/etc/shadow gparent=systemd ggparent=<NA> gggparent=<NA> evt_type=openat user=root user_uid=0 user_loginuid=-1 process=cat proc_exepath=/bin/cat parent=containerd-shim command=cat /etc/shadow terminal=0 container_id=bf3fa197fc92 container_name=vulnerable-nginx container_image_repository=nginx container_image_tag=1.21.0 k8s_pod_name=<NA> k8s_ns_name=<NA>
+2026-06-16T07:24:53.378517628+0000: Warning WARNING: Shell spawned in container (user=root user_loginuid=-1 container_id=bf3fa197fc92 container_name=vulnerable-nginx image=nginx:1.21.0 shell=bash parent=runc cmdline=bash -c curl -s --max-time 5 http://93.184.216.34 || true) container_id=bf3fa197fc92 container_name=vulnerable-nginx container_image_repository=nginx container_image_tag=1.21.0 k8s_pod_name=<NA> k8s_ns_name=<NA>
+2026-06-16T07:24:53.457800302+0000: Warning WARNING: Unexpected outbound connection from container (user=root user_loginuid=-1 container_id=bf3fa197fc92 container_name=vulnerable-nginx image=nginx:1.21.0 proc=curl dst_ip=172.17.0.3 dst_port=42770 proto=tcp cmdline=curl -s --max-time 5 http://93.184.216.34) container_id=bf3fa197fc92 container_name=vulnerable-nginx container_image_repository=nginx container_image_tag=1.21.0 k8s_pod_name=<NA> k8s_ns_name=<NA>
+
+Script done on 2026-06-16 12:55:13+05:30 [COMMAND_EXIT_CODE="0"]

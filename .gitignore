@@ -1,0 +1,7 @@
+# Ignore large JSON scan files — commit the .txt versions only
+trivy-scans/*.json
+
+# OS files
+.DS_Store
+*.swp
+*~

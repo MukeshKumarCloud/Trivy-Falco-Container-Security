@@ -1,0 +1,61 @@
+# =============================================================================
+# Falco Custom Detection Rules
+# Author: Mukesh Kumar
+# Deployment: Docker-based Falco (falcosecurity/falco:0.43.0)
+# MITRE ATT&CK: T1059.004 | T1552.001 | T1071.001 | T1048
+# =============================================================================
+
+- rule: Shell Spawned in Container
+  desc: >
+    Detects any shell process spawned inside a running container.
+    Containers should not require interactive shells at runtime.
+    Indicates an attacker using docker exec or kubectl exec for access.
+  condition: >
+    spawned_process
+    and container
+    and shell_procs
+  output: >
+    WARNING: Shell spawned in container
+    (user=%user.name user_loginuid=%user.loginuid
+    container_id=%container.id container_name=%container.name
+    image=%container.image.repository:%container.image.tag
+    shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline)
+  priority: WARNING
+  tags: [container, shell, mitre_execution, T1059.004]
+
+- rule: Sensitive File Read in Container
+  desc: >
+    Detects reads of sensitive files inside a container including /etc/shadow,
+    /etc/sudoers, /etc/pam.conf, and SSH keys.
+    Associated with credential harvesting post-compromise.
+  condition: >
+    open_read
+    and container
+    and sensitive_files
+    and not proc.name in (sshd, login, systemd, systemd-logind)
+  output: >
+    CRITICAL: Sensitive file read inside container
+    (user=%user.name user_loginuid=%user.loginuid
+    container_id=%container.id container_name=%container.name
+    image=%container.image.repository:%container.image.tag
+    proc=%proc.name file=%fd.name parent=%proc.pname cmdline=%proc.cmdline)
+  priority: CRITICAL
+  tags: [container, credentials, mitre_credential_access, T1552.001]
+
+- rule: Unexpected Outbound Connection from Container
+  desc: >
+    Detects outbound connections from containers to non-RFC1918 addresses.
+    Server containers should never initiate outbound connections.
+    Catches C2 beaconing, reverse shells, and data exfiltration.
+  condition: >
+    outbound
+    and container
+  output: >
+    WARNING: Unexpected outbound connection from container
+    (user=%user.name user_loginuid=%user.loginuid
+    container_id=%container.id container_name=%container.name
+    image=%container.image.repository:%container.image.tag
+    proc=%proc.name dst_ip=%fd.rip dst_port=%fd.rport
+    proto=%fd.l4proto cmdline=%proc.cmdline)
+  priority: WARNING
+  tags: [container, network, mitre_exfiltration, mitre_c2, T1071.001, T1048]
