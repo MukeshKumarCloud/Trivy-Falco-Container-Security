@@ -37,7 +37,7 @@ Implement and demonstrate two complementary layers of container security:
 - Docker CE 27.x
 - Minikube 1.34.x (Docker driver)
 - Trivy 0.58.x
-- Falco 0.39.x
+- Falco 0.43.x
 
 ---
 
